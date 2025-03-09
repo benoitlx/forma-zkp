@@ -1,7 +1,7 @@
 ```
 cargo install --locked presenterm
 cargo install --locked typst
-npm install -g @mermaid-js/mermaid-cli
+npm install @mermaid-js/mermaid-cli ./node_modules/.bin/mmdc -h
 ```
 
 watchout for the `presenterm` version.
