@@ -20,8 +20,14 @@ Intuition
 
 <!-- end_slide-->
 
-Dragibus
+Dragibus®
 ===
+
+![image:width:40%](assets/dragibus.jpg)
+
+<!-- pause -->
+
+Trouvez un protocol me permettant de prouver que j'ai choisis des `bonbons` de différentes couleurs, sans que vous puissiez savoir lesquels.
 
 <!-- end_slide -->
 
@@ -70,9 +76,17 @@ speaker_note: |
     Pb2: un ordi ne peut pas suivre du regard les données que P lui envoit, il ne peut pas s'assurer de la provenance des données que P envoit
 -->
 
+<!-- pause -->
+```typst +render
+#figure(
+  image("../assets/74.jpg"),
+  caption: [xkcd: 74],
+)
+```
+
 <!-- end_slide-->
 
-Sudoku
+Kururugi Sudoku
 ===
 
 ```mermaid +render
@@ -81,8 +95,8 @@ sequenceDiagram
     actor P as Alice alias Prover 
     actor V as Bob alias Verifier
     V ->> P: a 
-    Note over P: b = random<br/>key = a@b<br/>
-    P ->> V: $$\sigma_{key}(line)$$
+    Note over P: b = random<br/>key = a@b<br/>answer=$$\sigma_{key}(line)$$
+    P ->> V: answer 
     P ->> V: key
 ```
 
@@ -95,29 +109,94 @@ Formalisme
 
 <!-- end_slide -->
 
-Machine de Turing
+Algo quoi ??
 ===
 
 # Qu'est-ce qu'un Algorithme ?
+
+<!-- pause -->
+
+> Algorithm does not have a generally accepted formal definition. Researchers[1] are actively working on this problem.
+
+[From](https://en.wikipedia.org/wiki/Algorithm_characterizations)
+
+<!-- pause -->
+
+Pleins de modèle de calcul différents :
+<!-- incremental_lists: true -->
+- automate fini
+- automate à pile
+- lambda-calcul
+- machines à registres
+- automates cellulaires
+- **Machine de Turing**
+
+<!-- pause -->
+
+# Définition 1 - Machine de Turing
+
+```typst +render
+Une *machine de Turing* est un 7-uplet $(Sigma, Q, sigma, delta, Delta, q_0, F)$ où :
+- $Sigma$ est un ensemble de symboles appelé alphabet, avec un symbole particulié noté $\#$.
+- $Q$ est un ensemble non vide fini d'états.
+- $sigma : Q times Sigma arrow.r.long Sigma$ est une fonction d'*impression*.
+- $delta: Q times Sigma arrow.r.long Q$ est une fonction de *transition*.
+- $Delta: Q times Sigma arrow.r.long {-1, 1}$ est une fonction de *déplacement*.
+- $q_0$ l'état initial de la machine.
+- $F$ l'ensemble des états finaux.
+```
+
+<!-- pause -->
+
+## [Fonctionnement](https://turingmachine.io/)
+
+```typst +render
+À chaque étape, la machine se trouve dans un état $q$ et lit un symbole $a$, puis suit les instructions suivantes :
+- écrit le symbole $sigma(q,a)$ sur le ruban.
+- déplace la tête de lecture en fonction de $Delta(q, a)$.
+- passe de l'état $q$ à l'état $delta(q, a)$.
+```
+
+<!-- end_slide -->
+
+Machine de Turing interactive
+===
+
+<!-- new_lines: 10 -->
+
+![Machine de Turing Interactive](assets/interactive_turing_machine.png)
 
 <!-- end_slide -->
 
 Prove Me Wrong
 ===
 
+<!-- column_layout: [3, 2] -->
+
+<!-- column: 0 -->
 # Qu'est-ce qu'une *Preuve* ?
 
 <!-- pause -->
 <!-- incremental_lists: true -->
 
-- Preuve en Maths
-- Preuve en Science
-- En droit pénal (L'accusation doit prouver son cas "au-delà de tout doute raisonnable")
+- en Maths => preuve comme séquence statique de symboles
+- en Science => accumulation statistique de preuves
+- En droit pénal => L'accusation doit prouver son cas "au-delà de tout doute raisonnable"
 - En info, c'est ...
 
 <!-- pause -->
 
-# Définition
+# Définition 2 - Système de Preuve interactif
+
+```typst +render
+Soit $cal(L)$ un langage sur ${0,1}$ ($cal(L) subset.eq {0,1}^*$). \ On appel *système de preuve interactif pour $cal(L)$* \ toute paire d'*Algorithme interactif* $(P,V)$,\ avec $V$ s'exécutant en $cal(O)(n^k), k in NN$, vérifiant :
+- *Complétude*: Si $x in cal(L)$ et si $P$ et $V$ interagissent sur l'entrée $x$, \ à la fin de l'interraction, $V$ retourne "Accepté" \ avec probabilité supérieur à $0.9$.
+- *Robustesse*: Si $x in.not cal(L)$ alors pour tout algorithme $P^*$, \ si $P^*$ et $V$ interagissent sur l'entrée $x$, \ à la fin de l'interraction, $V$ retourne "Accepté" \ avec probabilité inférieur à $0.1$.
+```
+
+<!-- column: 1 -->
+![image:width:80%](assets/1153.png)
+xkcd: 1153
 
 
 <!-- 
@@ -130,12 +209,12 @@ speaker_note: |
 ZKP
 ===
 
-# Définition 1
+# Définition 3
 
 ```typst +render
-Un système de preuve interactif $(A,B)$ de connaissance du prédicat $P(I,S)$ est dit *à divulgation nulle de connaissance* \
-si pour tout vérifieur $tilde(B)$, la famille de variables aléatoires $#text[Vue]_(A,tilde(B))(I,H)$ est parfaitement approximable sur \
-$cal(L) = { (I,H)|I in L #text[ et] |H| lt.eq |I|^k }$ pour tout entier $k$ fixé.
+Un *système de preuve interactif* $(P, V)$ est dit à *divulgation nulle de connaissance* si \ pour toute stratégie de vérification efficace (s'exécute en tps polynomial) $V^*$, il existe un algorithme probabiliste efficace $S^*$, \ tel que pour tout $x in cal(L)$ les variables aléatoires suivantes sont calculatoirement indiscernable :
+- La sortie de $V^*$ après interaction avec $P$ sur l'entrée $x$.
+- La sortie de $S^*$ sur l'entrée $x$.
 ```
 
 <!-- end_slide-->
@@ -169,26 +248,41 @@ Applications
 
 <!-- column: 0 -->
 
-```bash +exec_replace
-pokemonsay --think "Oui !"
-```
-```bash +exec_replace
-pokemonsay --think "Oui !"
+<!-- pause -->
+```bash +exec_replace +no_background
+pokemonsay "Des questions ???" 
 ```
 
 <!-- column: 1 -->
 
-```bash +exec_replace
-pokemonsay "Des questions ???" 
+<!-- pause -->
+```bash +exec_replace +no_background
+pokemonsay --think "Oui !"
+```
+<!-- pause -->
+```bash +exec_replace +no_background
+pokemonsay --think "Oui !"
 ```
 
 <!-- column: 2 -->
 
-```bash +exec_replace
+<!-- pause -->
+```bash +exec_replace +no_background
 pokemonsay --think "Oui !"
 ```
-```bash +exec_replace
+<!-- pause -->
+```bash +exec_replace +no_background
 pokemonsay --think "Oui !"
+```
+
+<!-- end_slide -->
+
+Meta
+===
+
+```bash +exec_replace +no_background
+git pull
+onefetch -T prose programming
 ```
 
 <!-- end_slide -->
@@ -216,3 +310,11 @@ Références
 
 - [Repo github](https://github.com/benoitlx/forma-zkp)
 - [Drive Rézo](#todo)
+
+# Misc.
+
+- [`presenterm`](https://github.com/mfontanini/presenterm)
+- [`typst`](https://github.com/typst/typst)
+- [`pokemonsay`](https://github.com/possatti/pokemonsay)
+- [`onefetch`](https://github.com/o2sh/onefetch)
+- [`mmdc`](https://github.com/mermaid-js/mermaid-cli)
