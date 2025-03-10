@@ -15,6 +15,18 @@ theme:
 
 <!-- jump_to_middle -->
 
+Si vous voyez des `typos`, n'hésitez pas à faire une PR sur le repo de la forma, c'est encore plus drole en live.
+
+<!-- new_line -->
+https://github.com/benoitlx/forma-zkp
+
+<!-- pause -->
+Il y a un bonus si je merge un truc qui éteind mon ordi à la fin de la forma (oui c'est possible 🙃)
+
+<!-- end_slide -->
+
+<!-- jump_to_middle -->
+
 Intuition
 ===
 
@@ -78,10 +90,8 @@ speaker_note: |
 
 <!-- pause -->
 ```typst +render
-#figure(
-  image("../assets/74.jpg"),
-  caption: [xkcd: 74],
-)
+#image("../assets/74.jpg")
+#align(center)[xkcd: 74]
 ```
 
 <!-- end_slide-->
@@ -159,6 +169,15 @@ Une *machine de Turing* est un 7-uplet $(Sigma, Q, sigma, delta, Delta, q_0, F)$
 
 <!-- end_slide -->
 
+<!-- jump_to_middle -->
+```typst +render
+$
+"BB"(5) = 47" "176" "870
+$
+```
+
+<!-- end_slide -->
+
 Machine de Turing interactive
 ===
 
@@ -195,8 +214,11 @@ Soit $cal(L)$ un langage sur ${0,1}$ ($cal(L) subset.eq {0,1}^*$). \ On appel *s
 ```
 
 <!-- column: 1 -->
-![image:width:80%](assets/1153.png)
-xkcd: 1153
+<!-- pause -->
+```typst +render
+#image("../assets/1153.png")
+#align(center)[xkcd: 1153]
+```
 
 
 <!-- 
@@ -209,7 +231,7 @@ speaker_note: |
 ZKP
 ===
 
-# Définition 3
+# Définition 3 - Preuve à divulgation nulle de connaissance
 
 ```typst +render
 Un *système de preuve interactif* $(P, V)$ est dit à *divulgation nulle de connaissance* si \ pour toute stratégie de vérification efficace (s'exécute en tps polynomial) $V^*$, il existe un algorithme probabiliste efficace $S^*$, \ tel que pour tout $x in cal(L)$ les variables aléatoires suivantes sont calculatoirement indiscernable :
@@ -282,6 +304,7 @@ Meta
 
 ```bash +exec_replace +no_background
 git pull
+sleep 2
 onefetch -T prose programming
 ```
 
@@ -305,6 +328,7 @@ Références
 - [Cours ENS (bis)](https://www.irif.fr/~carton/Enseignement/Complexite/ENS/Redaction/2009-2010/ludovic.patey.pdf)
 - [TD ENS](https://www.di.ens.fr/brice.minaud/cours/2018/TD4.pdf)
 - [Cours du MIT](https://courses.csail.mit.edu/6.857/2018/files/L22-ZK-Boaz.pdf)
+- [StackExchange Crypto](https://crypto.stackexchange.com)
 
 # Lien vers la présentation
 
