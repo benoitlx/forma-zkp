@@ -120,10 +120,13 @@ sequenceDiagram
     autonumber
     actor P as Alice alias Prover 
     actor V as Bob alias Verifier
+    Note over V: a = random
     V ->> P: a 
     Note over P: b = random<br/>key = a@b<br/>answer=$$\sigma_{key}(line)$$
     P ->> V: answer 
+    Note over V: vérification
     P ->> V: key
+    Note over V: vérification de la clé avec a
 ```
 
 <!-- end_slide -->
@@ -188,7 +191,7 @@ Une *machine de Turing* est un 7-uplet $(Sigma, Q, sigma, delta, Delta, q_0, F)$
 <!-- jump_to_middle -->
 ```typst +render
 $
-"BB"(5) = 47" "176" "870
+"BB"(5) = 47" "176" "870" "#emoji.heart
 $
 ```
 
@@ -224,9 +227,9 @@ Prove Me Wrong
 # Définition 2 - Système de Preuve interactif
 
 ```typst +render
-Soit $cal(L)$ un langage sur ${0,1}$ ($cal(L) subset.eq {0,1}^*$). \ On appel *système de preuve interactif pour $cal(L)$* \ toute paire d'*Algorithme interactif* $(P,V)$,\ avec $V$ s'exécutant en $cal(O)(n^k), k in NN$, vérifiant :
-- *Complétude*: Si $x in cal(L)$ et si $P$ et $V$ interagissent sur l'entrée $x$, \ à la fin de l'interraction, $V$ retourne "Accepté" \ avec probabilité supérieur à $0.9$.
-- *Robustesse*: Si $x in.not cal(L)$ alors pour tout algorithme $P^*$, \ si $P^*$ et $V$ interagissent sur l'entrée $x$, \ à la fin de l'interraction, $V$ retourne "Accepté" \ avec probabilité inférieur à $0.1$.
+Soit $cal(L)$ un langage sur ${0,1}$ ($cal(L) subset.eq {0,1}^*$). \ On appel *système de preuve interactif pour $cal(L)$* \ toute paire de *machine de turing interactive* $(P,V)$,\ avec $V$ qui termine en $cal(O)(n^k)$ étapes, $k in NN$, \ ($n$ étant la taille du nombre sur le ruban de données initiales), vérifiant :
+- *Complétude*: $forall (x, w) in cal(L), #h(0.3cm) cal(P)(P(x circle.filled.tiny w) arrows.rl V(x) = 1) gt.eq.slant 0.9$ 
+- *Robustesse*: $forall P^* in cal(M)_"int", #h(0.3cm) forall (x, w) in.not cal(L), #h(0.3cm) cal(P)(P^*(x circle.filled.tiny w) arrows.rl V(x) = 1) lt.eq.slant 0.1$ 
 ```
 
 <!-- column: 1 -->
@@ -250,10 +253,18 @@ ZKP
 # Définition 3 - Preuve à divulgation nulle de connaissance
 
 ```typst +render
-Un *système de preuve interactif* $(P, V)$ est dit à *divulgation nulle de connaissance* si \ pour toute stratégie de vérification efficace (s'exécute en tps polynomial) $V^*$, il existe un algorithme probabiliste efficace $S^*$, \ tel que pour tout $x in cal(L)$ les variables aléatoires suivantes sont calculatoirement indiscernable :
-- La sortie de $V^*$ après interaction avec $P$ sur l'entrée $x$.
+Un *système de preuve interactif* $(P, V)$ *sur* $cal(L)$ est dit à *divulgation nulle de connaissance* si \ pour toute stratégie de vérification efficace (s'exécutant en tps polynomial) $V^*$, il existe un algorithme probabiliste efficace $S^*$, \ tel que pour tout $(x, w) in cal(L)$ les variables aléatoires suivantes sont calculatoirement indiscernable :
+- Le transcripte des interactions de $P$ et $V^*$ sur l'entrée $x$ ($P$ disposant de $w$)
 - La sortie de $S^*$ sur l'entrée $x$.
 ```
+
+<!-- pause -->
+
+# Résumé
+
+- complétude
+- robustesse
+- divulgation nulle de connaissance
 
 <!-- end_slide-->
 
@@ -264,13 +275,49 @@ Exemples
 
 <!-- end_slide -->
 
-ZK-QR
+Protocole de Fiat-Shamir
 ===
+
+![image:width:70%](assets/proto.png)
+
+<!-- pause -->
+
+=> système d'authentification
 
 <!-- end_slide -->
 
 ZK-HAM
 === 
+
+graphe
+
+<!-- end_slide -->
+
+ZK-HAM
+=== 
+
+permutation
+
+<!-- end_slide -->
+
+ZK-HAM
+=== 
+
+face cachée
+
+<!-- end_slide -->
+
+ZK-HAM
+=== 
+
+Le vérifieur décide de vérifier l'isomorphisme de graphe
+
+<!-- end_slide -->
+
+ZK-HAM
+=== 
+
+Le vérifieur décide de vérifier que P connait un cycle Hamiltonien pour H
 
 <!-- end_slide -->
 
