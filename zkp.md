@@ -89,6 +89,22 @@ speaker_note: |
 -->
 
 <!-- pause -->
+
+```python +exec
+/// import sys
+/// sys.path.append('/home/bleroux/Documents/forma-zkp/')
+/// 
+/// from random import seed, sample 
+/// from time import sleep
+/// shuffle = lambda x: sample(x, len(x))
+/// seed(73)
+/// 
+/// from sudoku import *
+/// 
+print(solution[2])
+```
+
+<!-- pause -->
 ```typst +render
 #image("../assets/74.jpg")
 #align(center)[xkcd: 74]
