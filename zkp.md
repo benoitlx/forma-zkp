@@ -88,7 +88,10 @@ speaker_note: |
     Pb2: un ordi ne peut pas suivre du regard les données que P lui envoit, il ne peut pas s'assurer de la provenance des données que P envoit
 -->
 
-<!-- pause -->
+<!-- end_slide -->
+
+Sudoku
+===
 
 ```python +exec
 /// import sys
@@ -121,8 +124,9 @@ sequenceDiagram
     actor P as Alice alias Prover 
     actor V as Bob alias Verifier
     Note over V: a = random
-    V ->> P: a 
+    V ->> P: a
     Note over P: b = random<br/>key = a@b<br/>answer=$$\sigma_{key}(line)$$
+    V ->> P: chemin 3 ou 4
     P ->> V: answer 
     Note over V: vérification
     P ->> V: key
@@ -160,7 +164,10 @@ Pleins de modèle de calcul différents :
 - automates cellulaires
 - **Machine de Turing**
 
-<!-- pause -->
+<!-- end_slide -->
+
+Algo quoi ????
+===
 
 # Définition 1 - Machine de Turing
 
@@ -175,9 +182,12 @@ Une *machine de Turing* est un 7-uplet $(Sigma, Q, sigma, delta, Delta, q_0, F)$
 - $F$ l'ensemble des états finaux.
 ```
 
-<!-- pause -->
+<!-- end_slide -->
 
-## [Fonctionnement](https://turingmachine.io/)
+Algo quoi ??
+===
+
+# [Fonctionnement](https://turingmachine.io/)
 
 ```typst +render
 À chaque étape, la machine se trouve dans un état $q$ et lit un symbole $a$, puis suit les instructions suivantes :
@@ -200,7 +210,6 @@ $
 Machine de Turing interactive
 ===
 
-<!-- new_lines: 10 -->
 
 ![Machine de Turing Interactive](assets/interactive_turing_machine.png)
 
@@ -253,7 +262,7 @@ ZKP
 # Définition 3 - Preuve à divulgation nulle de connaissance
 
 ```typst +render
-Un *système de preuve interactif* $(P, V)$ *sur* $cal(L)$ est dit à *divulgation nulle de connaissance* si \ pour toute stratégie de vérification efficace (s'exécutant en tps polynomial) $V^*$, il existe un algorithme probabiliste efficace $S^*$, \ tel que pour tout $(x, w) in cal(L)$ les variables aléatoires suivantes sont calculatoirement indiscernable :
+Un *système de preuve interactif* $(P, V)$ *sur* $cal(L)$ est dit à *divulgation nulle de connaissance* si \ pour toute stratégie de vérification efficace $V^*$, il existe un algorithme probabiliste efficace $S^*$, \ tel que pour tout $(x, w) in cal(L)$ les variables aléatoires suivantes sont calculatoirement indiscernable :
 - Le transcripte des interactions de $P$ et $V^*$ sur l'entrée $x$ ($P$ disposant de $w$)
 - La sortie de $S^*$ sur l'entrée $x$.
 ```
@@ -289,35 +298,103 @@ Protocole de Fiat-Shamir
 ZK-HAM
 === 
 
-graphe
+![image:width:60%](assets/graph_dark.png)
 
 <!-- end_slide -->
 
 ZK-HAM
 === 
 
-permutation
+```bash +exec_replace
+/home/bleroux/Documents/forma-zkp/.venv/bin/python graph.py > /dev/null
+```
+```bash +image
+cat tmp/graph.png
+```
+
+<!-- pause -->
+Comme j'avais un peu de temps je vous ai préparé un certain nombre d'exemple :
+
+```typst +render
+$
+cases(
+  n^(2p) "si on autorise les arêtes multiples et les boucles",
+  n^p (n-1)^p "si on enlève les boucles",
+  binom(n(n-2), p) "sinon",
+)
+$
+avec $n$ le nombre de sommet (ici $6$) et $p$ le nombre d'arêtes supplémentaires (ici $4$), on obtient $10626$ exemples
+```
+
+<!-- speaker_note: J'espère que personne ne remarquera que range(n) est tjr un cycle ham dans le graphe que je génère (parce que dans ce cas sigma = cycle ham dans H et donc ZKP KC) -->
 
 <!-- end_slide -->
 
 ZK-HAM
 === 
 
-face cachée
+# P choisi une permutation et créer un graphe isomorphe
+
+```bash +exec_replace
+cat tmp/perm
+/// echo
+cat tmp/init
+```
+
 
 <!-- end_slide -->
 
 ZK-HAM
 === 
 
-Le vérifieur décide de vérifier l'isomorphisme de graphe
+# P s'engage devant V 
+
+```bash +exec_replace
+cat tmp/cache
+```
 
 <!-- end_slide -->
 
 ZK-HAM
 === 
 
-Le vérifieur décide de vérifier que P connait un cycle Hamiltonien pour H
+# V décide de vérifier l'engagement de P
+
+```bash +exec_replace
+cat tmp/perm
+/// echo
+cat tmp/eng
+```
+
+<!-- end_slide -->
+
+ZK-HAM
+=== 
+
+# V décide de vérifier que P connait un cycle hamiltonien dans H 
+
+```bash +exec_replace
+cat tmp/c_in_h
+/// echo
+cat tmp/sub_aretes
+```
+
+<!-- end_slide -->
+
+ZK-HAM, l'intérêt ?
+=== 
+
+<!-- pause -->
+
+=> Permet de prouver que c'est possible de faire une *preuve à divulgation nulle de connaissance* presque tout le temps !
+<!-- new_line -->
+=> En fait il est possible de faire une *ZKP* pour convaincre quelqu'un de la connaissance de la solution à n'importe quel problème `NP` (pb facilement vérifiable).
+<!-- pause -->
+<!-- new_line -->
+=> Il suffit de `réduire` le problème `NP` en un problème `NP-Complet` pour lequel on connait une *ZKP*
+<!-- new_line -->
+<!-- pause -->
+=> et `HAM` est un problème `NP-Complet`
 
 <!-- end_slide -->
 
@@ -344,17 +421,8 @@ pokemonsay "Des questions ???"
 ```bash +exec_replace +no_background
 pokemonsay --think "Oui !"
 ```
-<!-- pause -->
-```bash +exec_replace +no_background
-pokemonsay --think "Oui !"
-```
-
 <!-- column: 2 -->
 
-<!-- pause -->
-```bash +exec_replace +no_background
-pokemonsay --think "Oui !"
-```
 <!-- pause -->
 ```bash +exec_replace +no_background
 pokemonsay --think "Oui !"
@@ -398,6 +466,7 @@ Références
 - [Repo github](https://github.com/benoitlx/forma-zkp)
 - [Drive Rézo](#todo)
 
+<!-- end_slide -->
 # Misc.
 
 - [`presenterm`](https://github.com/mfontanini/presenterm)
@@ -405,3 +474,20 @@ Références
 - [`pokemonsay`](https://github.com/possatti/pokemonsay)
 - [`onefetch`](https://github.com/o2sh/onefetch)
 - [`mmdc`](https://github.com/mermaid-js/mermaid-cli)
+- [`networkx`](https://networkx.org/)
+- [`matplotlib`](https://matplotlib.org/)
+
+# Preuve du nombre d'exemples possibles
+
+```typst +render
+Soit $G = (V, E) in cal(G)$ l'ensemble des graphes à $n+p$ \ sommets construit à partir d'un cycle $C$ hamiltonien de longueur $n$. \
+Par définition $G$ recouvre (i.e l'ensemble de ses arêtes est inclus dans l'ensemble des arêtes de) \ le graphe complet à $n$ sommets (noté $G_n = (V', E')$). \
+Soit $U$ et $U'$ tq $E' = C union.sq U'$ et $E = C union.sq U$. \
+$U$ est une combinaison de $p$ éléments de $U'$ car $|U| = p$ (par construction) et $U subset U'$. \
+$|cal(G)|$ est donc égale au nombre de telles combinaisons :
+$
+|cal(G)| &= binom(|U'|, p) \
+&= binom(|E'| - |C|, p) \
+&= binom(n(n-2), p)
+$
+```
