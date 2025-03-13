@@ -74,12 +74,12 @@ with open("tmp/perm", "w") as perm, open("tmp/init", "w") as init, open("tmp/eng
     c.write(f"{C_in_H}")
 
     def cons(u, v, C):
-        ret = True 
+        ret = False 
 
         n = len(C)
         for i in range(n):
             if u == C[i] and C[(i + 1) % len(C)] == v:
-                ret = False 
+                ret = True 
         
         return ret
 
