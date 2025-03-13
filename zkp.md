@@ -262,10 +262,12 @@ ZKP
 # Définition 3 - Preuve à divulgation nulle de connaissance
 
 ```typst +render
-Un *système de preuve interactif* $(P, V)$ *sur* $cal(L)$ est dit à *divulgation nulle de connaissance* si \ pour toute stratégie de vérification efficace $V^*$, il existe un algorithme probabiliste efficace $S^*$, \ tel que pour tout $(x, w) in cal(L)$ les variables aléatoires suivantes sont calculatoirement indiscernable :
-- Le transcripte des interactions de $P$ et $V^*$ sur l'entrée $x$ ($P$ disposant de $w$)
+Un *système de preuve interactif* $(P, V)$ *sur* $cal(L)$ est dit à *divulgation nulle de connaissance* si \ pour toute stratégie efficace $V^*$ pour le vérifieur, il existe un algorithme probabiliste efficace $S^*$, \ tel que pour tout $(x, w) in cal(L)$ les variables aléatoires suivantes sont calculatoirement indiscernable :
+- La sortie de $V^*$ après interaction avec $P$ sur l'entrée $x$ ($P$ disposant de $w$)
 - La sortie de $S^*$ sur l'entrée $x$.
 ```
+
+<!-- speaker_note: le vérifieur aussi malveillant qu'il puisse être n'apprendra pas plus d'information sur w en communicant avec P qu'en communicant avec un mec random S -->
 
 <!-- pause -->
 
@@ -318,12 +320,12 @@ Comme j'avais un peu de temps je vous ai préparé un certain nombre d'exemple :
 ```typst +render
 $
 cases(
-  n^(2p) "si on autorise les arêtes multiples et les boucles",
-  n^p (n-1)^p "si on enlève les boucles",
-  binom(n(n-2), p) "sinon",
+  n^(2p) &"si on autorise les arêtes multiples et les boucles",
+  n^p (n-1)^p &"si on enlève les boucles",
+  binom(n(n-1) / 2 - n, p) &"sinon",
 )
 $
-avec $n$ le nombre de sommet (ici $6$) et $p$ le nombre d'arêtes supplémentaires (ici $4$), on obtient $10626$ exemples
+avec $n$ le nombre de sommet (ici $7$) et $p$ le nombre d'arêtes supplémentaires (ici $5$), on obtient $4368$ exemples
 ```
 
 <!-- speaker_note: J'espère que personne ne remarquera que range(n) est tjr un cycle ham dans le graphe que je génère (parce que dans ce cas sigma = cycle ham dans H et donc ZKP KC) -->
@@ -398,10 +400,30 @@ ZK-HAM, l'intérêt ?
 
 <!-- end_slide -->
 
-<!-- jump_to_middle -->
-
 Applications
 === 
+
+<!-- incremental_lists: true -->
+1. `Systèmes d'authentification`
+2. Assurer la bonne formation de clés publiques pour la `gestion de certificat`
+3. Permet de prouvet qu'une transaction est valide dans la `blockchain` sans révéler d'info
+4. Permet de renforcer la sécurité des `protocoles cryptographiques` "standards"
+5. "`Proof of Personhood`"/"`Proof of Citizenship`" anonymisé 
+=> brique de base pour une **Démocratie Numérique** / des outils de **gouvernance**
+  - [`zk-voting`](https://eprint.iacr.org/2024/1003.pdf)
+  - [`gov4git`](https://gitrules.ai/)
+6. `Désarmement Nucléaire`
+
+<!-- 
+speaker_note: |
+  1.
+  2. un utilisateur enregistrant une clé publique (authorité de certification = V) possède la clé privée correspondante (évite la revendication de clé publique appartenant à un tiers)
+  3.
+  4. sécurité passive: protection contre interception et écoute / active: empêche la falsification des donnés 
+  5. C'est comme une carte électorale mais sans trahir l'identitée de la personne
+    - "Une personne une voix"
+  6. Permet de vérifier si un objet est une arme nucléaire sans révéler d'info sur celui-ci
+-->
 
 <!-- end_slide -->
 
@@ -450,8 +472,6 @@ Références
 - [Up and Atom](https://www.youtube.com/watch?v=V5uVKZn3F_4)
 - [Passe-Science](https://www.youtube.com/watch?v=OSdcnoAmohs)
 
-# Papiers
-
 # Lien Randoms
 
 - [Pages wikipédia (fr et en)](https://en.wikipedia.org/wiki/Zero-knowledge_proof)
@@ -460,6 +480,11 @@ Références
 - [TD ENS](https://www.di.ens.fr/brice.minaud/cours/2018/TD4.pdf)
 - [Cours du MIT](https://courses.csail.mit.edu/6.857/2018/files/L22-ZK-Boaz.pdf)
 - [StackExchange Crypto](https://crypto.stackexchange.com)
+- [Proof of Personhood](https://en.wikipedia.org/wiki/Proof_of_personhood)
+
+# Papiers
+
+- `Fiat-Shamir`, "How To Prove Yourself: Practical Solutions to Identification and Signature Problems", 1986
 
 # Lien vers la présentation
 
@@ -480,14 +505,15 @@ Références
 # Preuve du nombre d'exemples possibles
 
 ```typst +render
-Soit $G = (V, E) in cal(G)$ l'ensemble des graphes à $n+p$ \ sommets construit à partir d'un cycle $C$ hamiltonien de longueur $n$. \
+Soit $G = (V, E) in cal(G)$ l'ensemble des graphes à $n+p$ sommets \ construit à partir d'un cycle hamiltonien $C$ de longueur $n$. \
 Par définition $G$ recouvre (i.e l'ensemble de ses arêtes est inclus dans l'ensemble des arêtes de) \ le graphe complet à $n$ sommets (noté $G_n = (V', E')$). \
 Soit $U$ et $U'$ tq $E' = C union.sq U'$ et $E = C union.sq U$. \
 $U$ est une combinaison de $p$ éléments de $U'$ car $|U| = p$ (par construction) et $U subset U'$. \
 $|cal(G)|$ est donc égale au nombre de telles combinaisons :
 $
-|cal(G)| &= binom(|U'|, p) \
-&= binom(|E'| - |C|, p) \
-&= binom(n(n-2), p)
+|cal(G)| &= binom(|U'|, p) = binom(|E'| - |C|, p) \
+&= binom(n(n-1)/2 - n, p)
 $
 ```
+
+PS: j'aurais peut-être du réviser mon rattrapage pour demain plutôt que de faire cette preuve ^^

@@ -3,3 +3,4 @@ node_modules/*
 package*
 .venv/*
 tmp/*
+zkp.pdf

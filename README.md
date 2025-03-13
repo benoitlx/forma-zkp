@@ -11,18 +11,21 @@ Attention toutefois pour un maximum de **flow**, il est recommandé de faire cet
 
 ## Présentation depuis un terminal
 
-```
-cargo install --locked presenterm
-cargo install --locked typst
-npm install @mermaid-js/mermaid-cli ./node_modules/.bin/mmdc -h
-```
+Il faut clone le repo puis faire un `just deps` (attention il faut `cargo` et `npm`) pour installer les dépendances nécéssaires.
 
-watchout for the `presenterm` version.
+Cela va installer :
+- [`presenterm`](https://github.com/mfontanini/presenterm) pour run la présentation
+- [`typst`](https://github.com/typst/typst) pour le rendu des figures faisant intervenir des maths
+- [`mmdc`](https://github.com/mermaid-js/mermaid-cli) pour le rendu des diagrammes séquences
 
-Optionnal:
-`pokemonsay`
-`onefetch`
-`python`
+Dans un environnement python :
+- [`networkx`](https://networkx.org/) pour gérer les graphes 
+- [`matplotlib`](https://matplotlib.org/) pour le rendu des graphes
+- [`presenterm-export`](https://github.com/mfontanini/presenterm-export) pour l'export en pdf
+
+Optionnel :
+- [`onefetch`](https://github.com/o2sh/onefetch)
+- [`pokemonsay`](https://github.com/possatti/pokemonsay)
 
 ## TODO
 

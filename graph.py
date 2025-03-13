@@ -22,8 +22,8 @@ def create_random_hamiltonian_graph(n, extra_edges=2):
     return G
 
 # Parameters
-n = 6  # Number of nodes
-extra_edges = 4  # Number of extra edges to add
+n = 7  # Number of nodes
+extra_edges = 5  # Number of extra edges to add
 
 # Create a random Hamiltonian graph
 G = create_random_hamiltonian_graph(n, extra_edges)
